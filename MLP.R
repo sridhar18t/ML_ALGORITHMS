@@ -14,18 +14,20 @@ train_workset_error <- NULL
 
 index <- 0.50
 
-# Applying min-max scaling…
-dmaximum <- apply(workset, 2, max)
-dminimum <- apply(workset, 2, min)
-scaled_workset <- as.workset.frame(scale(workset, center = dminimum, scale = dmaximum - dminimum))
-i <- sample(1:nrow(scaled_workset),round(index*nrow(scaled_workset)))    
-scaled_workset <- scaled_workset[i,]
+#scale
+max = apply(polynomial, 2, maximum)
+min = apply(polynomial, 2, minimim)
+scaled_polynomial = as.data.frame(scale(polynomial, center = minimum, scale = maximum - minimum))
+sample = sample.split(scaled_data,SplitRatio = 0.75)
+set.seed(500)
+train =subset(scaled_polynomial,sample ==TRUE)
+test_polynomial=subset(scaled_polynomial, sample==FALSE)
 
 crossvalidate <- function(workset,hid=c(3))
 {
-  dmaximum <- apply(workset, 2, max)
-  dminimum <- apply(workset, 2, min)
-  scaled_workset <- as.workset.frame(scale(workset, center = dminimum, scale = dmaximum - dminimum))
+  maximum <- apply(workset, 2, max)
+  minimum <- apply(workset, 2, min)
+  scaled_workset <- as.workset.frame(scale(workset, center = minimum, scale = maximum - minimum))
   error_cross_validate <- NULL
   k <- 10
 
@@ -62,4 +64,3 @@ train_workset_error
 which(min(test_workset_error) == test_workset_error)
 which(min(train_workset_error) == train_workset_error)
 
-RMSE.Neural_Net <- min(test_workset_error)
